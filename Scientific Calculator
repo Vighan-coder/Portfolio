@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background: #0a0a0a;
+        }
+
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .color-bends-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .calculator {
+            position: relative;
+            z-index: 1;
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.4);
+            border: 1px solid rgba(255, 107, 157, 0.3);
+            width: 420px;
+        }
+
+        .display {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: right;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .previous-operand {
+            color: #888;
+            font-size: 18px;
+            min-height: 24px;
+        }
+
+        .current-operand {
+            color: #fff;
+            font-size: 36px;
+            font-weight: 300;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 18px 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #fff;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .number {
+            background: #333;
+        }
+
+        .number:hover {
+            background: #444;
+        }
+
+        .operator {
+            background: #f39c12;
+        }
+
+        .operator:hover {
+            background: #e67e22;
+        }
+
+        .function {
+            background: #3498db;
+            font-size: 14px;
+        }
+
+        .function:hover {
+            background: #2980b9;
+        }
+
+        .equals {
+            background: #27ae60;
+            grid-column: span 2;
+        }
+
+        .equals:hover {
+            background: #229954;
+        }
+
+        .clear {
+            background: #e74c3c;
+        }
+
+        .clear:hover {
+            background: #c0392b;
+        }
+
+        .delete {
+            background: #95a5a6;
+        }
+
+        .delete:hover {
+            background: #7f8c8d;
+        }
+
+        .zero {
+            grid-column: span 2;
+        }
+    </style>
+</head>
+<body>
+    <div id="background-canvas"></div>
+    <div class="calculator">
+        <div class="display">
+            <div class="previous-operand" id="previousOperand"></div>
+            <div class="current-operand" id="currentOperand">0</div>
+        </div>
+        <div class="buttons">
+            <button class="function" onclick="calculator.scientificFunction('sin')">sin</button>
+            <button class="function" onclick="calculator.scientificFunction('cos')">cos</button>
+            <button class="function" onclick="calculator.scientificFunction('tan')">tan</button>
+            <button class="clear" onclick="calculator.clear()">AC</button>
+            <button class="delete" onclick="calculator.delete()">DEL</button>
+            <button class="operator" onclick="calculator.chooseOperator('÷')">÷</button>
+            
+            <button class="function" onclick="calculator.scientificFunction('asin')">sin⁻¹</button>
+            <button class="function" onclick="calculator.scientificFunction('acos')">cos⁻¹</button>
+            <button class="function" onclick="calculator.scientificFunction('atan')">tan⁻¹</button>
+            <button class="number" onclick="calculator.appendNumber('7')">7</button>
+            <button class="number" onclick="calculator.appendNumber('8')">8</button>
+            <button class="number" onclick="calculator.appendNumber('9')">9</button>
+            
+            <button class="function" onclick="calculator.scientificFunction('sqrt')">√</button>
+            <button class="function" onclick="calculator.scientificFunction('cbrt')">∛</button>
+            <button class="function" onclick="calculator.chooseOperator('^')">x^y</button>
+            <button class="number" onclick="calculator.appendNumber('4')">4</button>
+            <button class="number" onclick="calculator.appendNumber('5')">5</button>
+            <button class="number" onclick="calculator.appendNumber('6')">6</button>
+            
+            <button class="function" onclick="calculator.scientificFunction('log')">log</button>
+            <button class="function" onclick="calculator.scientificFunction('ln')">ln</button>
+            <button class="function" onclick="calculator.scientificFunction('exp')">e^x</button>
+            <button class="number" onclick="calculator.appendNumber('1')">1</button>
+            <button class="number" onclick="calculator.appendNumber('2')">2</button>
+            <button class="number" onclick="calculator.appendNumber('3')">3</button>
+            
+            <button class="function" onclick="calculator.appendConstant('pi')">π</button>
+            <button class="function" onclick="calculator.appendConstant('e')">e</button>
+            <button class="function" onclick="calculator.scientificFunction('factorial')">n!</button>
+            <button class="number zero" onclick="calculator.appendNumber('0')">0</button>
+            <button class="number" onclick="calculator.appendNumber('.')">.</button>
+            <button class="operator" onclick="calculator.chooseOperator('×')">×</button>
+            
+            <button class="function" onclick="calculator.toggleSign()">+/-</button>
+            <button class="operator" onclick="calculator.chooseOperator('%')">%</button>
+            <button class="function" onclick="calculator.openParenthesis()">(</button>
+            <button class="function" onclick="calculator.closeParenthesis()">)</button>
+            <button class="operator" onclick="calculator.chooseOperator('-')">-</button>
+            <button class="operator" onclick="calculator.chooseOperator('+')">+</button>
+            
+            <button class="equals" onclick="calculator.compute()">=</button>
+            <button class="function" onclick="calculator.toggleRadDeg()" id="angleMode">DEG</button>
+            <button class="function" onclick="calculator.memoryRecall()">MR</button>
+            <button class="function" onclick="calculator.memoryClear()">MC</button>
+            <button class="function" onclick="calculator.memoryAdd()">M+</button>
+        </div>
+    </div>
+
+    <script>
+        class Calculator {
+            constructor(previousOperandElement, currentOperandElement) {
+                this.previousOperandElement = previousOperandElement;
+                this.currentOperandElement = currentOperandElement;
+                this.angleMode = 'DEG'; // DEG or RAD
+                this.memory = 0;
+                this.openParens = 0;
+                this.clear();
+            }
+
+            clear() {
+                this.currentOperand = '0';
+                this.previousOperand = '';
+                this.operation = undefined;
+                this.openParens = 0;
+                this.updateDisplay();
+            }
+
+            delete() {
+                if (this.currentOperand === '0') return;
+                if (this.currentOperand.length === 1) {
+                    this.currentOperand = '0';
+                } else {
+                    this.currentOperand = this.currentOperand.slice(0, -1);
+                }
+                this.updateDisplay();
+            }
+
+            appendNumber(number) {
+                if (number === '.' && this.currentOperand.includes('.')) return;
+                if (this.currentOperand === '0' && number !== '.') {
+                    this.currentOperand = number;
+                } else {
+                    this.currentOperand += number;
+                }
+                this.updateDisplay();
+            }
+
+            appendConstant(constant) {
+                const value = constant === 'pi' ? Math.PI : Math.E;
+                if (this.currentOperand === '0') {
+                    this.currentOperand = value.toString();
+                } else {
+                    this.currentOperand += value.toString();
+                }
+                this.updateDisplay();
+            }
+
+            chooseOperator(operation) {
+                if (this.currentOperand === '') return;
+                if (this.previousOperand !== '') {
+                    this.compute();
+                }
+                this.operation = operation;
+                this.previousOperand = this.currentOperand;
+                this.currentOperand = '0';
+                this.updateDisplay();
+            }
+
+            scientificFunction(func) {
+                const current = parseFloat(this.currentOperand);
+                if (isNaN(current)) return;
+                
+                let result;
+                const angleMultiplier = this.angleMode === 'DEG' ? Math.PI / 180 : 1;
+                
+                switch(func) {
+                    case 'sin':
+                        result = Math.sin(current * angleMultiplier);
+                        break;
+                    case 'cos':
+                        result = Math.cos(current * angleMultiplier);
+                        break;
+                    case 'tan':
+                        result = Math.tan(current * angleMultiplier);
+                        break;
+                    case 'asin':
+                        result = Math.asin(current) / angleMultiplier;
+                        break;
+                    case 'acos':
+                        result = Math.acos(current) / angleMultiplier;
+                        break;
+                    case 'atan':
+                        result = Math.atan(current) / angleMultiplier;
+                        break;
+                    case 'sqrt':
+                        result = Math.sqrt(current);
+                        break;
+                    case 'cbrt':
+                        result = Math.cbrt(current);
+                        break;
+                    case 'log':
+                        result = Math.log10(current);
+                        break;
+                    case 'ln':
+                        result = Math.log(current);
+                        break;
+                    case 'exp':
+                        result = Math.exp(current);
+                        break;
+                    case 'factorial':
+                        if (current < 0 || !Number.isInteger(current)) {
+                            result = 'Error';
+                        } else {
+                            result = this.factorial(current);
+                        }
+                        break;
+                    default:
+                        return;
+                }
+                
+                this.currentOperand = result.toString();
+                this.operation = undefined;
+                this.previousOperand = '';
+                this.updateDisplay();
+            }
+
+            factorial(n) {
+                if (n === 0 || n === 1) return 1;
+                let result = 1;
+                for (let i = 2; i <= n; i++) {
+                    result *= i;
+                }
+                return result;
+            }
+
+            toggleSign() {
+                const current = parseFloat(this.currentOperand);
+                if (!isNaN(current)) {
+                    this.currentOperand = (-current).toString();
+                    this.updateDisplay();
+                }
+            }
+
+            openParenthesis() {
+                if (this.currentOperand === '0') {
+                    this.currentOperand = '(';
+                } else {
+                    this.currentOperand += '(';
+                }
+                this.openParens++;
+                this.updateDisplay();
+            }
+
+            closeParenthesis() {
+                if (this.openParens > 0) {
+                    this.currentOperand += ')';
+                    this.openParens--;
+                    this.updateDisplay();
+                }
+            }
+
+            toggleRadDeg() {
+                this.angleMode = this.angleMode === 'DEG' ? 'RAD' : 'DEG';
+                document.getElementById('angleMode').textContent = this.angleMode;
+            }
+
+            memoryAdd() {
+                const current = parseFloat(this.currentOperand);
+                if (!isNaN(current)) {
+                    this.memory += current;
+                }
+            }
+
+            memoryRecall() {
+                this.currentOperand = this.memory.toString();
+                this.updateDisplay();
+            }
+
+            memoryClear() {
+                this.memory = 0;
+            }
+
+            compute() {
+                let computation;
+                const prev = parseFloat(this.previousOperand);
+                const current = parseFloat(this.currentOperand);
+                if (isNaN(prev) || isNaN(current)) return;
+
+                switch (this.operation) {
+                    case '+':
+                        computation = prev + current;
+                        break;
+                    case '-':
+                        computation = prev - current;
+                        break;
+                    case '×':
+                        computation = prev * current;
+                        break;
+                    case '÷':
+                        computation = prev / current;
+                        break;
+                    case '^':
+                        computation = Math.pow(prev, current);
+                        break;
+                    case '%':
+                        computation = prev % current;
+                        break;
+                    default:
+                        return;
+                }
+
+                this.currentOperand = computation.toString();
+                this.operation = undefined;
+                this.previousOperand = '';
+                this.updateDisplay();
+            }
+
+            getDisplayNumber(number) {
+                const stringNumber = number.toString();
+                
+                // Handle scientific notation for very large or small numbers
+                if (stringNumber.includes('e')) {
+                    return parseFloat(stringNumber).toExponential(6);
+                }
+                
+                const integerDigits = parseFloat(stringNumber.split('.')[0]);
+                const decimalDigits = stringNumber.split('.')[1];
+                let integerDisplay;
+                
+                if (isNaN(integerDigits)) {
+                    integerDisplay = '';
+                } else {
+                    integerDisplay = integerDigits.toLocaleString('en', {
+                        maximumFractionDigits: 0
+                    });
+                }
+                
+                if (decimalDigits != null) {
+                    // Limit decimal places to 8 for readability
+                    const limitedDecimals = decimalDigits.substring(0, 8);
+                    return `${integerDisplay}.${limitedDecimals}`;
+                } else {
+                    return integerDisplay;
+                }
+            }
+
+            updateDisplay() {
+                this.currentOperandElement.textContent = this.getDisplayNumber(this.currentOperand);
+                if (this.operation != null) {
+                    this.previousOperandElement.textContent = 
+                        `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`;
+                } else {
+                    this.previousOperandElement.textContent = '';
+                }
+            }
+        }
+
+        const previousOperandElement = document.getElementById('previousOperand');
+        const currentOperandElement = document.getElementById('currentOperand');
+
+        const calculator = new Calculator(previousOperandElement, currentOperandElement);
+
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.key >= '0' && e.key <= '9') calculator.appendNumber(e.key);
+            if (e.key === '.') calculator.appendNumber('.');
+            if (e.key === '+' || e.key === '-') calculator.chooseOperator(e.key);
+            if (e.key === '*') calculator.chooseOperator('×');
+            if (e.key === '/') {
+                e.preventDefault();
+                calculator.chooseOperator('÷');
+            }
+            if (e.key === 'Enter' || e.key === '=') calculator.compute();
+            if (e.key === 'Backspace') calculator.delete();
+            if (e.key === 'Escape') calculator.clear();
+            if (e.key === '(') calculator.openParenthesis();
+            if (e.key === ')') calculator.closeParenthesis();
+        });
+    </script>
+
+    <script type="text/babel">
+        const { useEffect, useRef } = React;
+
+        const MAX_COLORS = 8;
+
+        const frag = `
+#define MAX_COLORS ${MAX_COLORS}
+uniform vec2 uCanvas;
+uniform float uTime;
+uniform float uSpeed;
+uniform vec2 uRot;
+uniform int uColorCount;
+uniform vec3 uColors[MAX_COLORS];
+uniform int uTransparent;
+uniform float uScale;
+uniform float uFrequency;
+uniform float uWarpStrength;
+uniform vec2 uPointer;
+uniform float uMouseInfluence;
+uniform float uParallax;
+uniform float uNoise;
+varying vec2 vUv;
+
+void main() {
+  float t = uTime * uSpeed;
+  vec2 p = vUv * 2.0 - 1.0;
+  p += uPointer * uParallax * 0.1;
+  vec2 rp = vec2(p.x * uRot.x - p.y * uRot.y, p.x * uRot.y + p.y * uRot.x);
+  vec2 q = vec2(rp.x * (uCanvas.x / uCanvas.y), rp.y);
+  q /= max(uScale, 0.0001);
+  q /= 0.5 + 0.2 * dot(q, q);
+  q += 0.2 * cos(t) - 7.56;
+  vec2 toward = (uPointer - rp);
+  q += toward * uMouseInfluence * 0.2;
+
+    vec3 col = vec3(0.0);
+    float a = 1.0;
+
+    if (uColorCount > 0) {
+      vec2 s = q;
+      vec3 sumCol = vec3(0.0);
+      float cover = 0.0;
+      for (int i = 0; i < MAX_COLORS; ++i) {
+            if (i >= uColorCount) break;
+            s -= 0.01;
+            vec2 r = sin(1.5 * (s.yx * uFrequency) + 2.0 * cos(s * uFrequency));
+            float m0 = length(r + sin(5.0 * r.y * uFrequency - 3.0 * t + float(i)) / 4.0);
+            float kBelow = clamp(uWarpStrength, 0.0, 1.0);
+            float kMix = pow(kBelow, 0.3);
+            float gain = 1.0 + max(uWarpStrength - 1.0, 0.0);
+            vec2 disp = (r - s) * kBelow;
+            vec2 warped = s + disp * gain;
+            float m1 = length(warped + sin(5.0 * warped.y * uFrequency - 3.0 * t + float(i)) / 4.0);
+            float m = mix(m0, m1, kMix);
+            float w = 1.0 - exp(-6.0 / exp(6.0 * m));
+            sumCol += uColors[i] * w;
+            cover = max(cover, w);
+      }
+      col = clamp(sumCol, 0.0, 1.0);
+      a = uTransparent > 0 ? cover : 1.0;
+    } else {
+        vec2 s = q;
+        for (int k = 0; k < 3; ++k) {
+            s -= 0.01;
+            vec2 r = sin(1.5 * (s.yx * uFrequency) + 2.0 * cos(s * uFrequency));
+            float m0 = length(r + sin(5.0 * r.y * uFrequency - 3.0 * t + float(k)) / 4.0);
+            float kBelow = clamp(uWarpStrength, 0.0, 1.0);
+            float kMix = pow(kBelow, 0.3);
+            float gain = 1.0 + max(uWarpStrength - 1.0, 0.0);
+            vec2 disp = (r - s) * kBelow;
+            vec2 warped = s + disp * gain;
+            float m1 = length(warped + sin(5.0 * warped.y * uFrequency - 3.0 * t + float(k)) / 4.0);
+            float m = mix(m0, m1, kMix);
+            col[k] = 1.0 - exp(-6.0 / exp(6.0 * m));
+        }
+        a = uTransparent > 0 ? max(max(col.r, col.g), col.b) : 1.0;
+    }
+
+    if (uNoise > 0.0001) {
+      float n = fract(sin(dot(gl_FragCoord.xy + vec2(uTime), vec2(12.9898, 78.233))) * 43758.5453123);
+      col += (n - 0.5) * uNoise;
+      col = clamp(col, 0.0, 1.0);
+    }
+
+    vec3 rgb = (uTransparent > 0) ? col * a : col;
+    gl_FragColor = vec4(rgb, a);
+}
+`;
+
+        const vert = `
+varying vec2 vUv;
+void main() {
+  vUv = uv;
+  gl_Position = vec4(position, 1.0);
+}
+`;
+
+        function ColorBends({
+          className = '',
+          style = {},
+          rotation = 45,
+          speed = 0.2,
+          colors = [],
+          transparent = true,
+          autoRotate = 0,
+          scale = 1,
+          frequency = 1,
+          warpStrength = 1,
+          mouseInfluence = 1,
+          parallax = 0.5,
+          noise = 0.1
+        }) {
+          const containerRef = useRef(null);
+          const rendererRef = useRef(null);
+          const rafRef = useRef(null);
+          const materialRef = useRef(null);
+          const resizeObserverRef = useRef(null);
+          const rotationRef = useRef(rotation);
+          const autoRotateRef = useRef(autoRotate);
+          const pointerTargetRef = useRef(new THREE.Vector2(0, 0));
+          const pointerCurrentRef = useRef(new THREE.Vector2(0, 0));
+          const pointerSmoothRef = useRef(8);
+
+          useEffect(() => {
+            const container = containerRef.current;
+            const scene = new THREE.Scene();
+            const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+            const geometry = new THREE.PlaneGeometry(2, 2);
+            const uColorsArray = Array.from({ length: MAX_COLORS }, () => new THREE.Vector3(0, 0, 0));
+            const material = new THREE.ShaderMaterial({
+              vertexShader: vert,
+              fragmentShader: frag,
+              uniforms: {
+                uCanvas: { value: new THREE.Vector2(1, 1) },
+                uTime: { value: 0 },
+                uSpeed: { value: speed },
+                uRot: { value: new THREE.Vector2(1, 0) },
+                uColorCount: { value: 0 },
+                uColors: { value: uColorsArray },
+                uTransparent: { value: transparent ? 1 : 0 },
+                uScale: { value: scale },
+                uFrequency: { value: frequency },
+                uWarpStrength: { value: warpStrength },
+                uPointer: { value: new THREE.Vector2(0, 0) },
+                uMouseInfluence: { value: mouseInfluence },
+                uParallax: { value: parallax },
+                uNoise: { value: noise }
+              },
+              premultipliedAlpha: true,
+              transparent: true
+            });
+            materialRef.current = material;
+
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            const renderer = new THREE.WebGLRenderer({
+              antialias: false,
+              powerPreference: 'high-performance',
+              alpha: true
+            });
+            rendererRef.current = renderer;
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+            renderer.setClearColor(0x000000, transparent ? 0 : 1);
+            renderer.domElement.style.width = '100%';
+            renderer.domElement.style.height = '100%';
+            renderer.domElement.style.display = 'block';
+            container.appendChild(renderer.domElement);
+
+            const clock = new THREE.Clock();
+
+            const handleResize = () => {
+              const w = container.clientWidth || 1;
+              const h = container.clientHeight || 1;
+              renderer.setSize(w, h, false);
+              material.uniforms.uCanvas.value.set(w, h);
+            };
+
+            handleResize();
+
+            if ('ResizeObserver' in window) {
+              const ro = new ResizeObserver(handleResize);
+              ro.observe(container);
+              resizeObserverRef.current = ro;
+            } else {
+              window.addEventListener('resize', handleResize);
+            }
+
+            const loop = () => {
+              const dt = clock.getDelta();
+              const elapsed = clock.elapsedTime;
+              material.uniforms.uTime.value = elapsed;
+
+              const deg = (rotationRef.current % 360) + autoRotateRef.current * elapsed;
+              const rad = (deg * Math.PI) / 180;
+              const c = Math.cos(rad);
+              const s = Math.sin(rad);
+              material.uniforms.uRot.value.set(c, s);
+
+              const cur = pointerCurrentRef.current;
+              const tgt = pointerTargetRef.current;
+              const amt = Math.min(1, dt * pointerSmoothRef.current);
+              cur.lerp(tgt, amt);
+              material.uniforms.uPointer.value.copy(cur);
+              renderer.render(scene, camera);
+              rafRef.current = requestAnimationFrame(loop);
+            };
+            rafRef.current = requestAnimationFrame(loop);
+
+            return () => {
+              if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+              if (resizeObserverRef.current) resizeObserverRef.current.disconnect();
+              else window.removeEventListener('resize', handleResize);
+              geometry.dispose();
+              material.dispose();
+              renderer.dispose();
+              if (renderer.domElement && renderer.domElement.parentElement === container) {
+                container.removeChild(renderer.domElement);
+              }
+            };
+          }, [frequency, mouseInfluence, noise, parallax, scale, speed, transparent, warpStrength]);
+
+          useEffect(() => {
+            const material = materialRef.current;
+            const renderer = rendererRef.current;
+            if (!material) return;
+
+            rotationRef.current = rotation;
+            autoRotateRef.current = autoRotate;
+            material.uniforms.uSpeed.value = speed;
+            material.uniforms.uScale.value = scale;
+            material.uniforms.uFrequency.value = frequency;
+            material.uniforms.uWarpStrength.value = warpStrength;
+            material.uniforms.uMouseInfluence.value = mouseInfluence;
+            material.uniforms.uParallax.value = parallax;
+            material.uniforms.uNoise.value = noise;
+
+            const toVec3 = hex => {
+              const h = hex.replace('#', '').trim();
+              const v =
+                h.length === 3
+                  ? [parseInt(h[0] + h[0], 16), parseInt(h[1] + h[1], 16), parseInt(h[2] + h[2], 16)]
+                  : [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+              return new THREE.Vector3(v[0] / 255, v[1] / 255, v[2] / 255);
+            };
+
+            const arr = (colors || []).filter(Boolean).slice(0, MAX_COLORS).map(toVec3);
+            for (let i = 0; i < MAX_COLORS; i++) {
+              const vec = material.uniforms.uColors.value[i];
+              if (i < arr.length) vec.copy(arr[i]);
+              else vec.set(0, 0, 0);
+            }
+            material.uniforms.uColorCount.value = arr.length;
+
+            material.uniforms.uTransparent.value = transparent ? 1 : 0;
+            if (renderer) renderer.setClearColor(0x000000, transparent ? 0 : 1);
+          }, [
+            rotation,
+            autoRotate,
+            speed,
+            scale,
+            frequency,
+            warpStrength,
+            mouseInfluence,
+            parallax,
+            noise,
+            colors,
+            transparent
+          ]);
+
+          useEffect(() => {
+            const material = materialRef.current;
+            const container = containerRef.current;
+            if (!material || !container) return;
+
+            const handlePointerMove = e => {
+              const rect = container.getBoundingClientRect();
+              const x = ((e.clientX - rect.left) / (rect.width || 1)) * 2 - 1;
+              const y = -(((e.clientY - rect.top) / (rect.height || 1)) * 2 - 1);
+              pointerTargetRef.current.set(x, y);
+            };
+
+            container.addEventListener('pointermove', handlePointerMove);
+            return () => {
+              container.removeEventListener('pointermove', handlePointerMove);
+            };
+          }, []);
+
+          return <div ref={containerRef} className={`color-bends-container ${className}`} style={style} />;
+        }
+
+        // Render the ColorBends background
+        const root = ReactDOM.createRoot(document.getElementById('background-canvas'));
+        root.render(
+          <ColorBends 
+            rotation={45}
+            speed={0.15}
+            colors={['#FF6B9D', '#C44569', '#FFA07A', '#9B59B6', '#3498DB', '#1ABC9C']}
+            transparent={true}
+            autoRotate={10}
+            scale={1.2}
+            frequency={1.5}
+            warpStrength={1.2}
+            mouseInfluence={0.8}
+            parallax={0.3}
+            noise={0.05}
+          />
+        );
+    </script>
+</body>
+</html>
