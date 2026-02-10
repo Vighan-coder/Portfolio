@@ -1,30 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0f172a">
-    <title>NexTask - Your Smart To-Do App</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Vighan Raj Verma - Portfolio</title>
     <style>
-        :root {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-tertiary: #334155;
-            --accent-primary: #06b6d4;
-            --accent-secondary: #8b5cf6;
-            --accent-success: #10b981;
-            --accent-warning: #f59e0b;
-            --accent-danger: #ef4444;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --text-tertiary: #64748b;
-            --border: #334155;
-            --shadow: rgba(0, 0, 0, 0.3);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -32,1105 +12,435 @@
         }
 
         body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #e0e0e0;
+            line-height: 1.6;
         }
 
-        .aurora-container {
-            position: fixed;
+        nav {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0.4;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .aurora-container canvas {
-            width: 100%;
-            height: 100%;
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
         }
 
-        .app-container {
-            max-width: 800px;
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+        }
+
+        nav a:hover {
+            color: #64ffda;
+        }
+
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 1rem;
-            min-height: 100vh;
-            animation: fadeIn 0.5s ease;
-            position: relative;
-            z-index: 1;
+            padding: 2rem;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .header {
-            padding: 2rem 0 1.5rem;
+        .hero {
             text-align: center;
-            position: relative;
+            padding: 6rem 2rem;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
-        .logo {
-            font-family: 'Syne', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
+            animation: fadeInUp 1s ease-out;
         }
 
-        .tagline {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            font-weight: 500;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .stats {
-            display: flex;
-            gap: 0.75rem;
-            margin: 1.5rem 0;
-            overflow-x: auto;
-            padding: 0.5rem 0;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
-        .stat-card {
-            flex: 1;
-            min-width: 140px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1rem;
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: #64ffda;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
+        section {
+            padding: 4rem 2rem;
+            margin: 2rem 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1s ease-out;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #64ffda;
             text-align: center;
-            transition: all 0.3s ease;
         }
 
-        .stat-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent-primary);
-            box-shadow: 0 8px 24px var(--shadow);
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 1.1rem;
+            line-height: 1.8;
         }
 
-        .stat-number {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 600;
-        }
-
-        .input-section {
-            background: var(--bg-secondary);
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            animation: slideDown 0.4s ease 0.2s both;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .input-row {
-            display: flex;
-            gap: 0.75rem;
+        .about-content p {
             margin-bottom: 1rem;
         }
 
-        .input-group {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        label {
-            font-size: 0.75rem;
+        .university {
+            color: #667eea;
             font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
         }
 
-        input, select {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 0.75rem 1rem;
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            outline: none;
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
         }
 
-        input:focus, select:focus {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        .skill-category {
+            background: rgba(100, 255, 218, 0.05);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        input::placeholder {
-            color: var(--text-tertiary);
+        .skill-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.2);
+            animation: float 3s ease-in-out infinite;
         }
 
-        .btn {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border: none;
-            border-radius: 12px;
-            padding: 0.875rem 1.5rem;
-            color: white;
-            font-family: 'Syne', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        .skill-category h3 {
+            color: #64ffda;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
         }
 
-        .btn:hover {
+        .skill-category ul {
+            list-style: none;
+        }
+
+        .skill-category li {
+            padding: 0.5rem 0;
+            color: #e0e0e0;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .project-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .project-card a:hover {
+            background: #667eea;
+            color: #fff;
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.3);
         }
 
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .filters {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 0.5rem 1rem;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .filter-btn:hover {
-            border-color: var(--accent-primary);
-            color: var(--text-primary);
-        }
-
-        .filter-btn.active {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-color: transparent;
-            color: white;
-        }
-
-        .tasks-container {
-            animation: slideUp 0.4s ease 0.3s both;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .task-item {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.25rem;
-            margin-bottom: 0.75rem;
-            transition: all 0.3s ease;
-            animation: taskAppear 0.4s ease;
-        }
-
-        @keyframes taskAppear {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .task-item:hover {
-            border-color: var(--accent-primary);
-            box-shadow: 0 4px 16px var(--shadow);
-        }
-
-        .task-item.completed {
-            opacity: 0.6;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(16, 185, 129, 0.02));
-        }
-
-        .task-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .checkbox-wrapper {
-            position: relative;
-            margin-top: 0.25rem;
-        }
-
-        .checkbox {
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            appearance: none;
-            background: var(--bg-tertiary);
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .checkbox:checked {
-            background: var(--accent-success);
-            border-color: var(--accent-success);
-        }
-
-        .checkbox:checked::after {
-            content: '✓';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .task-content {
-            flex: 1;
-        }
-
-        .task-title {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            word-wrap: break-word;
-        }
-
-        .task-item.completed .task-title {
-            text-decoration: line-through;
-            color: var(--text-secondary);
-        }
-
-        .task-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            align-items: center;
-            margin-bottom: 0.75rem;
-        }
-
-        .badge {
-            font-size: 0.7rem;
-            padding: 0.3rem 0.6rem;
-            border-radius: 6px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .priority-high {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--accent-danger);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .priority-medium {
-            background: rgba(245, 158, 11, 0.2);
-            color: var(--accent-warning);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-        }
-
-        .priority-low {
-            background: rgba(6, 182, 212, 0.2);
-            color: var(--accent-primary);
-            border: 1px solid rgba(6, 182, 212, 0.3);
-        }
-
-        .category-badge {
-            background: rgba(139, 92, 246, 0.2);
-            color: var(--accent-secondary);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-        }
-
-        .due-date {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        .due-date.overdue {
-            color: var(--accent-danger);
-            font-weight: 600;
-        }
-
-        .task-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .icon-btn {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.1rem;
-        }
-
-        .icon-btn:hover {
-            transform: scale(1.1);
-            border-color: var(--accent-primary);
-        }
-
-        .icon-btn.delete:hover {
-            background: var(--accent-danger);
-            border-color: var(--accent-danger);
-        }
-
-        .edit-mode {
-            background: var(--bg-tertiary);
-            border-radius: 12px;
-            padding: 1rem;
-        }
-
-        .edit-mode input {
-            margin-bottom: 0.75rem;
-        }
-
-        .edit-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .edit-actions button {
-            flex: 1;
-            padding: 0.625rem;
-            font-size: 0.85rem;
-        }
-
-        .empty-state {
+        .contact-content {
             text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        .empty-state svg {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 1.5rem;
-            opacity: 0.3;
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
         }
 
-        .empty-state h3 {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
+        .contact-links a {
+            color: #64ffda;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 0.8rem 1.5rem;
+            border: 2px solid #64ffda;
+            border-radius: 5px;
+            transition: all 0.3s;
         }
 
-        @media (max-width: 640px) {
-            .logo {
+        .contact-links a:hover {
+            background: #64ffda;
+            color: #0f0c29;
+            transform: translateY(-3px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #888;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            h2 {
                 font-size: 2rem;
             }
 
-            .input-row {
-                flex-direction: column;
+            nav ul {
+                gap: 1rem;
             }
-
-            .stats {
-                gap: 0.5rem;
-            }
-
-            .stat-card {
-                min-width: 100px;
-                padding: 0.75rem;
-            }
-
-            .stat-number {
-                font-size: 1.5rem;
-            }
-        }
-
-        .pwa-install {
-            position: fixed;
-            bottom: 1rem;
-            left: 1rem;
-            right: 1rem;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            padding: 1rem;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px var(--shadow);
-            display: none;
-            align-items: center;
-            gap: 1rem;
-            animation: slideUpBounce 0.5s ease;
-        }
-
-        @keyframes slideUpBounce {
-            from { transform: translateY(100px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .pwa-install.show {
-            display: flex;
-        }
-
-        .pwa-install-text {
-            flex: 1;
-            font-weight: 600;
-        }
-
-        .pwa-install-btn {
-            background: white;
-            color: var(--bg-primary);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div id="aurora-bg" class="aurora-container"></div>
-    <div class="app-container">
-        <header class="header">
-            <h1 class="logo">NexTask</h1>
-            <p class="tagline">Organize. Prioritize. Achieve.</p>
-        </header>
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-number" id="totalTasks">0</div>
-                <div class="stat-label">Total</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="activeTasks">0</div>
-                <div class="stat-label">Active</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="completedTasks">0</div>
-                <div class="stat-label">Done</div>
-            </div>
-        </div>
-
-        <div class="input-section">
-            <div class="input-row">
-                <div class="input-group" style="flex: 2;">
-                    <label for="taskInput">Task</label>
-                    <input type="text" id="taskInput" placeholder="What needs to be done?" />
-                </div>
-            </div>
-            <div class="input-row">
-                <div class="input-group">
-                    <label for="categoryInput">Category</label>
-                    <select id="categoryInput">
-                        <option value="Personal">Personal</option>
-                        <option value="Work">Work</option>
-                        <option value="Shopping">Shopping</option>
-                        <option value="Health">Health</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label for="priorityInput">Priority</label>
-                    <select id="priorityInput">
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label for="dueDateInput">Due Date</label>
-                    <input type="date" id="dueDateInput" />
-                </div>
-            </div>
-            <button class="btn" onclick="addTask()">Add Task</button>
-        </div>
-
-        <div class="filters">
-            <button class="filter-btn active" data-filter="all" onclick="filterTasks('all')">All</button>
-            <button class="filter-btn" data-filter="active" onclick="filterTasks('active')">Active</button>
-            <button class="filter-btn" data-filter="completed" onclick="filterTasks('completed')">Completed</button>
-            <button class="filter-btn" data-filter="high" onclick="filterTasks('high')">High Priority</button>
-        </div>
-
-        <div class="tasks-container" id="tasksContainer"></div>
+    <div class="hero" id="home">
+        <h1>Vighan Raj Verma</h1>
+        <p>Computer Science Student | Aspiring Data Scientist</p>
     </div>
 
-    <div class="pwa-install" id="pwaInstall">
-        <div class="pwa-install-text">Install NexTask for quick access!</div>
-        <button class="pwa-install-btn" onclick="installPWA()">Install</button>
+    <div class="container">
+        <section id="about">
+            <h2>About Me</h2>
+            <div class="about-content">
+                <p>Hi, I'm Vighan Raj Verma, a B.Tech Computer Science student with a strong interest in data-driven technologies and emerging innovations in the tech world. I'm passionate about developing a solid foundation in programming, algorithms, and analytical thinking, with a long-term goal of becoming a Data Scientist.</p>
+                <p>I enjoy exploring concepts in data analysis, machine learning, and problem-solving, while continuously expanding my technical knowledge through hands-on coding and real-world projects. I'm committed to learning, experimenting, and growing my expertise to contribute meaningfully to the field of technology and data science.</p>
+                <p class="university">🎓 Rajiv Gandhi Proudyogiki Vishwavidyalaya</p>
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2>Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Programming Languages</h3>
+                    <ul>
+                        <li>• Python</li>
+                        <li>• C</li>
+                        <li>• C++</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Technologies</h3>
+                    <ul>
+                        <li>• MySQL</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Tools</h3>
+                    <ul>
+                        <li>• Git</li>
+                        <li>• VS Code</li>
+                        <li>• Figma</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>Scientific Calculator</h3>
+                    <p>A fully functional scientific calculator with beautiful animated ColorBends shader background. Features trigonometric functions, logarithms, exponents, memory functions, and support for both degrees and radians modes.</p>
+                    <p style="margin-top: 1rem; color: #64ffda;">Technologies: HTML, CSS, JavaScript, Three.js, WebGL Shaders</p>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="calculator.html" target="_blank" style="color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border: 2px solid #667eea; border-radius: 5px; display: inline-block; transition: all 0.3s;">
+                            View Calculator
+                        </a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <h3>NexTask - Smart To-Do App</h3>
+                    <p>A modern, full-featured progressive web app for task management with beautiful Aurora animated background. Features include task categories, priority levels, due dates, daily notifications at 9 AM, and persistent storage that saves all your tasks automatically.</p>
+                    <p style="margin-top: 1rem; color: #64ffda;">Technologies: HTML, CSS, JavaScript, WebGL Shaders, LocalStorage API, Notifications API</p>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="nextask-app.html" target="_blank" style="color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border: 2px solid #667eea; border-radius: 5px; display: inline-block; transition: all 0.3s;">
+                            View NexTask
+                        </a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <h3>Coming Soon</h3>
+                    <p>Exciting projects in development. Stay tuned for updates on my data science and programming endeavors!</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Get In Touch</h2>
+            <div class="contact-content">
+                <p>I'm always open to discussing new opportunities, collaborations, or just connecting with fellow tech enthusiasts!</p>
+                <p style="margin-top: 2rem; font-size: 1.1rem; color: #64ffda;">📧 vighnrajverma00893@gmail.com</p>
+                <div class="contact-links">
+                    <a href="https://github.com/Vighan-coder" target="_blank">GitHub</a>
+                    <a href="https://www.linkedin.com/in/raj-verma-4992b2317" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+        </section>
     </div>
 
-    <div class="pwa-install" id="notificationPrompt" style="display: none;">
-        <div class="pwa-install-text">📢 Enable notifications to get daily task reminders!</div>
-        <button class="pwa-install-btn" onclick="enableNotifications()">Enable</button>
-        <button class="pwa-install-btn" onclick="dismissNotificationPrompt()" style="background: transparent; border: 1px solid white;">Later</button>
-    </div>
+    <footer>
+        <p>&copy; 2024 Vighan Raj Verma. All rights reserved.</p>
+    </footer>
 
     <script>
-        // Aurora Background Implementation
-        class AuroraRenderer {
-            constructor(container) {
-                this.container = container;
-                this.canvas = document.createElement('canvas');
-                this.gl = this.canvas.getContext('webgl2', {
-                    alpha: true,
-                    premultipliedAlpha: true,
-                    antialias: true
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
                 });
-                
-                if (!this.gl) {
-                    console.warn('WebGL2 not supported');
-                    return;
-                }
-
-                this.container.appendChild(this.canvas);
-                this.setupGL();
-                this.createProgram();
-                this.resize();
-                window.addEventListener('resize', () => this.resize());
-                this.animate();
-            }
-
-            setupGL() {
-                const gl = this.gl;
-                gl.clearColor(0, 0, 0, 0);
-                gl.enable(gl.BLEND);
-                gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-            }
-
-            createProgram() {
-                const gl = this.gl;
-                
-                const vertexShader = `#version 300 es
-                in vec2 position;
-                void main() {
-                    gl_Position = vec4(position, 0.0, 1.0);
-                }`;
-
-                const fragmentShader = `#version 300 es
-                precision highp float;
-                uniform float uTime;
-                uniform float uAmplitude;
-                uniform vec3 uColorStops[3];
-                uniform vec2 uResolution;
-                uniform float uBlend;
-                out vec4 fragColor;
-
-                vec3 permute(vec3 x) {
-                    return mod(((x * 34.0) + 1.0) * x, 289.0);
-                }
-
-                float snoise(vec2 v){
-                    const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
-                    vec2 i = floor(v + dot(v, C.yy));
-                    vec2 x0 = v - i + dot(i, C.xx);
-                    vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-                    vec4 x12 = x0.xyxy + C.xxzz;
-                    x12.xy -= i1;
-                    i = mod(i, 289.0);
-                    vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0)) + i.x + vec3(0.0, i1.x, 1.0));
-                    vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)), 0.0);
-                    m = m * m;
-                    m = m * m;
-                    vec3 x = 2.0 * fract(p * C.www) - 1.0;
-                    vec3 h = abs(x) - 0.5;
-                    vec3 ox = floor(x + 0.5);
-                    vec3 a0 = x - ox;
-                    m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
-                    vec3 g;
-                    g.x = a0.x * x0.x + h.x * x0.y;
-                    g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-                    return 130.0 * dot(m, g);
-                }
-
-                void main() {
-                    vec2 uv = gl_FragCoord.xy / uResolution;
-                    vec3 rampColor = mix(mix(uColorStops[0], uColorStops[1], smoothstep(0.0, 0.5, uv.x)), 
-                                        uColorStops[2], smoothstep(0.5, 1.0, uv.x));
-                    float height = snoise(vec2(uv.x * 2.0 + uTime * 0.1, uTime * 0.25)) * 0.5 * uAmplitude;
-                    height = exp(height);
-                    height = (uv.y * 2.0 - height + 0.2);
-                    float intensity = 0.6 * height;
-                    float midPoint = 0.20;
-                    float auroraAlpha = smoothstep(midPoint - uBlend * 0.5, midPoint + uBlend * 0.5, intensity);
-                    vec3 auroraColor = intensity * rampColor;
-                    fragColor = vec4(auroraColor * auroraAlpha, auroraAlpha);
-                }`;
-
-                const vs = gl.createShader(gl.VERTEX_SHADER);
-                gl.shaderSource(vs, vertexShader);
-                gl.compileShader(vs);
-
-                const fs = gl.createShader(gl.FRAGMENT_SHADER);
-                gl.shaderSource(fs, fragmentShader);
-                gl.compileShader(fs);
-
-                this.program = gl.createProgram();
-                gl.attachShader(this.program, vs);
-                gl.attachShader(this.program, fs);
-                gl.linkProgram(this.program);
-
-                // Create fullscreen triangle
-                const positions = new Float32Array([-1, -1, 3, -1, -1, 3]);
-                const buffer = gl.createBuffer();
-                gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-                gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
-
-                const posLoc = gl.getAttribLocation(this.program, 'position');
-                gl.enableVertexAttribArray(posLoc);
-                gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
-
-                // Get uniform locations
-                this.uniforms = {
-                    uTime: gl.getUniformLocation(this.program, 'uTime'),
-                    uAmplitude: gl.getUniformLocation(this.program, 'uAmplitude'),
-                    uColorStops: gl.getUniformLocation(this.program, 'uColorStops'),
-                    uResolution: gl.getUniformLocation(this.program, 'uResolution'),
-                    uBlend: gl.getUniformLocation(this.program, 'uBlend')
-                };
-
-                gl.useProgram(this.program);
-            }
-
-            hexToRgb(hex) {
-                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-                return result ? [
-                    parseInt(result[1], 16) / 255,
-                    parseInt(result[2], 16) / 255,
-                    parseInt(result[3], 16) / 255
-                ] : [0, 0, 0];
-            }
-
-            resize() {
-                const width = this.container.offsetWidth;
-                const height = this.container.offsetHeight;
-                this.canvas.width = width;
-                this.canvas.height = height;
-                this.gl.viewport(0, 0, width, height);
-                this.gl.uniform2f(this.uniforms.uResolution, width, height);
-            }
-
-            animate(time = 0) {
-                requestAnimationFrame((t) => this.animate(t));
-                
-                const gl = this.gl;
-                gl.useProgram(this.program);
-                
-                // Set uniforms
-                gl.uniform1f(this.uniforms.uTime, time * 0.001);
-                gl.uniform1f(this.uniforms.uAmplitude, 1.0);
-                gl.uniform1f(this.uniforms.uBlend, 0.5);
-                
-                // Color stops: cyan to purple to cyan
-                const colors = [
-                    this.hexToRgb('#06b6d4'),
-                    this.hexToRgb('#8b5cf6'),
-                    this.hexToRgb('#06b6d4')
-                ];
-                gl.uniform3fv(this.uniforms.uColorStops, colors.flat());
-
-                gl.clear(gl.COLOR_BUFFER_BIT);
-                gl.drawArrays(gl.TRIANGLES, 0, 3);
-            }
-        }
-
-        // Initialize Aurora background
-        window.addEventListener('load', () => {
-            const container = document.getElementById('aurora-bg');
-            if (container) {
-                new AuroraRenderer(container);
-            }
-        });
-
-        // Original TaskFlow Code
-        let tasks = [];
-        let currentFilter = 'all';
-        let deferredPrompt;
-        let notificationsEnabled = false;
-
-        // Load tasks from localStorage
-        function loadTasks() {
-            const saved = localStorage.getItem('nextask-tasks');
-            if (saved) {
-                tasks = JSON.parse(saved);
-                renderTasks();
-                updateStats();
-            }
-        }
-
-        // Save tasks to localStorage
-        function saveTasks() {
-            localStorage.setItem('nextask-tasks', JSON.stringify(tasks));
-        }
-
-        // Add new task
-        function addTask() {
-            const taskInput = document.getElementById('taskInput');
-            const categoryInput = document.getElementById('categoryInput');
-            const priorityInput = document.getElementById('priorityInput');
-            const dueDateInput = document.getElementById('dueDateInput');
-
-            const taskText = taskInput.value.trim();
-            if (!taskText) {
-                taskInput.focus();
-                return;
-            }
-
-            const newTask = {
-                id: Date.now(),
-                text: taskText,
-                category: categoryInput.value,
-                priority: priorityInput.value,
-                dueDate: dueDateInput.value,
-                completed: false,
-                createdAt: new Date().toISOString()
-            };
-
-            tasks.unshift(newTask);
-            saveTasks();
-            renderTasks();
-            updateStats();
-
-            // Clear inputs
-            taskInput.value = '';
-            dueDateInput.value = '';
-            taskInput.focus();
-        }
-
-        // Toggle task completion
-        function toggleTask(id) {
-            const task = tasks.find(t => t.id === id);
-            if (task) {
-                task.completed = !task.completed;
-                saveTasks();
-                renderTasks();
-                updateStats();
-            }
-        }
-
-        // Delete task
-        function deleteTask(id) {
-            if (confirm('Delete this task?')) {
-                tasks = tasks.filter(t => t.id !== id);
-                saveTasks();
-                renderTasks();
-                updateStats();
-            }
-        }
-
-        // Edit task
-        function editTask(id) {
-            const task = tasks.find(t => t.id === id);
-            if (!task) return;
-
-            const taskElement = document.querySelector(`[data-task-id="${id}"]`);
-            const content = taskElement.querySelector('.task-content');
-
-            content.innerHTML = `
-                <div class="edit-mode">
-                    <input type="text" id="edit-text-${id}" value="${task.text}" />
-                    <select id="edit-category-${id}">
-                        <option value="Personal" ${task.category === 'Personal' ? 'selected' : ''}>Personal</option>
-                        <option value="Work" ${task.category === 'Work' ? 'selected' : ''}>Work</option>
-                        <option value="Shopping" ${task.category === 'Shopping' ? 'selected' : ''}>Shopping</option>
-                        <option value="Health" ${task.category === 'Health' ? 'selected' : ''}>Health</option>
-                        <option value="Other" ${task.category === 'Other' ? 'selected' : ''}>Other</option>
-                    </select>
-                    <select id="edit-priority-${id}">
-                        <option value="low" ${task.priority === 'low' ? 'selected' : ''}>Low</option>
-                        <option value="medium" ${task.priority === 'medium' ? 'selected' : ''}>Medium</option>
-                        <option value="high" ${task.priority === 'high' ? 'selected' : ''}>High</option>
-                    </select>
-                    <input type="date" id="edit-date-${id}" value="${task.dueDate || ''}" />
-                    <div class="edit-actions">
-                        <button class="btn" onclick="saveEdit(${id})">Save</button>
-                        <button class="btn" onclick="renderTasks()" style="background: var(--bg-tertiary);">Cancel</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Save edited task
-        function saveEdit(id) {
-            const task = tasks.find(t => t.id === id);
-            if (!task) return;
-
-            task.text = document.getElementById(`edit-text-${id}`).value.trim();
-            task.category = document.getElementById(`edit-category-${id}`).value;
-            task.priority = document.getElementById(`edit-priority-${id}`).value;
-            task.dueDate = document.getElementById(`edit-date-${id}`).value;
-
-            if (!task.text) {
-                alert('Task cannot be empty!');
-                return;
-            }
-
-            saveTasks();
-            renderTasks();
-            updateStats();
-        }
-
-        // Filter tasks
-        function filterTasks(filter) {
-            currentFilter = filter;
-            
-            // Update active filter button
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.filter === filter);
             });
-
-            renderTasks();
-        }
-
-        // Render tasks
-        function renderTasks() {
-            const container = document.getElementById('tasksContainer');
-            
-            let filteredTasks = tasks;
-            
-            if (currentFilter === 'active') {
-                filteredTasks = tasks.filter(t => !t.completed);
-            } else if (currentFilter === 'completed') {
-                filteredTasks = tasks.filter(t => t.completed);
-            } else if (currentFilter === 'high') {
-                filteredTasks = tasks.filter(t => t.priority === 'high' && !t.completed);
-            }
-
-            if (filteredTasks.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 11l3 3L22 4"></path>
-                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
-                        </svg>
-                        <h3>No tasks here!</h3>
-                        <p>Add a task to get started</p>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = filteredTasks.map(task => {
-                const isOverdue = task.dueDate && new Date(task.dueDate) < new Date() && !task.completed;
-                const dueDateText = task.dueDate 
-                    ? new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                    : '';
-
-                return `
-                    <div class="task-item ${task.completed ? 'completed' : ''}" data-task-id="${task.id}">
-                        <div class="task-header">
-                            <div class="checkbox-wrapper">
-                                <input type="checkbox" class="checkbox" ${task.completed ? 'checked' : ''} 
-                                    onchange="toggleTask(${task.id})" />
-                            </div>
-                            <div class="task-content">
-                                <div class="task-title">${task.text}</div>
-                                <div class="task-meta">
-                                    <span class="badge priority-${task.priority}">${task.priority}</span>
-                                    <span class="badge category-badge">${task.category}</span>
-                                    ${task.dueDate ? `<span class="due-date ${isOverdue ? 'overdue' : ''}">📅 ${dueDateText}</span>` : ''}
-                                </div>
-                                <div class="task-actions">
-                                    <button class="icon-btn" onclick="editTask(${task.id})" title="Edit">✏️</button>
-                                    <button class="icon-btn delete" onclick="deleteTask(${task.id})" title="Delete">🗑️</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Update statistics
-        function updateStats() {
-            const total = tasks.length;
-            const completed = tasks.filter(t => t.completed).length;
-            const active = total - completed;
-
-            document.getElementById('totalTasks').textContent = total;
-            document.getElementById('activeTasks').textContent = active;
-            document.getElementById('completedTasks').textContent = completed;
-        }
-
-        // PWA Installation
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('pwaInstall').classList.add('show');
         });
 
-        function installPWA() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    deferredPrompt = null;
-                    document.getElementById('pwaInstall').classList.remove('show');
-                });
-            }
-        }
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
 
-        // Allow Enter key to add task
-        document.getElementById('taskInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                addTask();
-            }
-        });
-
-        // Initialize app
-        loadTasks();
-
-        // Check notification permission and show prompt
-        function checkNotificationPermission() {
-            if ('Notification' in window) {
-                if (Notification.permission === 'granted') {
-                    notificationsEnabled = true;
-                    scheduleDailyReminder();
-                } else if (Notification.permission === 'default') {
-                    // Show notification prompt after a short delay
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
                     setTimeout(() => {
-                        document.getElementById('notificationPrompt').style.display = 'flex';
-                    }, 3000);
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
                 }
-            }
-        }
+            });
+        }, observerOptions);
 
-        // Enable notifications
-        async function enableNotifications() {
-            if ('Notification' in window) {
-                const permission = await Notification.requestPermission();
-                if (permission === 'granted') {
-                    notificationsEnabled = true;
-                    document.getElementById('notificationPrompt').style.display = 'none';
-                    scheduleDailyReminder();
-                    
-                    // Send a test notification
-                    new Notification('NexTask Notifications Enabled! 🎉', {
-                        body: 'You\'ll receive daily reminders about your pending tasks.',
-                        icon: '✅',
-                        tag: 'welcome'
-                    });
-                }
-            }
-        }
+        // Observe skill cards
+        document.querySelectorAll('.skill-category').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
 
-        // Dismiss notification prompt
-        function dismissNotificationPrompt() {
-            document.getElementById('notificationPrompt').style.display = 'none';
-            localStorage.setItem('nextask-notification-dismissed', 'true');
-        }
+        // Observe project cards
+        document.querySelectorAll('.project-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
 
-        // Schedule daily reminder
-        function scheduleDailyReminder() {
-            // Check if we should send a reminder
-            const lastReminder = localStorage.getItem('nextask-last-reminder');
-            const today = new Date().toDateString();
-            
-            if (lastReminder !== today) {
-                sendDailyReminder();
-            }
-
-            // Set up interval to check every hour
-            setInterval(() => {
-                const now = new Date();
-                const currentDate = now.toDateString();
-                const lastCheck = localStorage.getItem('nextask-last-reminder');
-                
-                // Send reminder at 9 AM if not sent today
-                if (now.getHours() === 9 && lastCheck !== currentDate) {
-                    sendDailyReminder();
-                }
-            }, 3600000); // Check every hour
-        }
-
-        // Send daily reminder notification
-        function sendDailyReminder() {
-            if (!notificationsEnabled || Notification.permission !== 'granted') return;
-
-            const activeTasks = tasks.filter(t => !t.completed);
-            const highPriorityTasks = activeTasks.filter(t => t.priority === 'high');
-            const overdueTasks = activeTasks.filter(t => 
-                t.dueDate && new Date(t.dueDate) < new Date()
-            );
-
-            if (activeTasks.length === 0) {
-                new Notification('NexTask - All Clear! ✨', {
-                    body: 'No pending tasks. Great job!',
-                    tag: 'daily-reminder'
-                });
-            } else {
-                let body = `You have ${activeTasks.length} pending task${activeTasks.length > 1 ? 's' : ''}.`;
-                
-                if (overdueTasks.length > 0) {
-                    body += ` ⚠️ ${overdueTasks.length} overdue!`;
-                } else if (highPriorityTasks.length > 0) {
-                    body += ` 🎯 ${highPriorityTasks.length} high priority.`;
-                }
-
-                new Notification('NexTask - Daily Reminder 📋', {
-                    body: body,
-                    tag: 'daily-reminder',
-                    requireInteraction: true
-                });
-            }
-
-            localStorage.setItem('nextask-last-reminder', new Date().toDateString());
-        }
-
-        // Add manual reminder button to stats
-        function addReminderButton() {
-            const statsDiv = document.querySelector('.stats');
-            const reminderCard = document.createElement('div');
-            reminderCard.className = 'stat-card';
-            reminderCard.style.cursor = 'pointer';
-            reminderCard.onclick = () => {
-                if (notificationsEnabled) {
-                    sendDailyReminder();
-                } else {
-                    enableNotifications();
-                }
-            };
-            reminderCard.innerHTML = `
-                <div class="stat-number">🔔</div>
-                <div class="stat-label">Remind</div>
-            `;
-            statsDiv.appendChild(reminderCard);
-        }
-
-        // Initialize notifications on load
-        setTimeout(() => {
-            checkNotificationPermission();
-            addReminderButton();
-        }, 1000);
+        // Parallax effect for background
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            document.body.style.backgroundPositionY = scrolled * 0.5 + 'px';
+        });
     </script>
 </body>
 </html>
