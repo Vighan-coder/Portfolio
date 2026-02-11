@@ -20,7 +20,8 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
             position: relative;
         }
 
@@ -230,7 +231,7 @@
             }
         }
 
-        /* Particle effects */
+        /* Particle effects - FIXED: Start invisible */
         .particles {
             position: fixed;
             top: 0;
@@ -247,11 +248,12 @@
             height: 3px;
             background: rgba(255, 255, 255, 0.8);
             border-radius: 50%;
+            opacity: 0;
             animation: float 10s infinite;
         }
 
         @keyframes float {
-            0%, 100% {
+            0% {
                 transform: translateY(0) translateX(0);
                 opacity: 0;
             }
@@ -279,12 +281,19 @@
             position: relative;
             z-index: 2;
             border: 1px solid rgba(255, 255, 255, 0.3);
+            margin: 20px auto;
         }
 
         @media (max-width: 768px) {
+            body {
+                align-items: flex-start;
+                padding: 10px;
+            }
+
             .game-container {
                 padding: 30px 25px;
                 border-radius: 15px;
+                margin: 10px auto;
             }
 
             h1 {
@@ -780,10 +789,17 @@
                 localStorage.setItem('bestScore', bestScore);
                 document.getElementById('bestScore').textContent = bestScore;
             }
+
+            // Scroll to medal section on mobile
+            setTimeout(() => {
+                medalSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
         }
 
         function startNewGame() {
             initGame();
+            // Scroll to top on new game
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         document.getElementById('guessInput').addEventListener('keypress', function(e) {
