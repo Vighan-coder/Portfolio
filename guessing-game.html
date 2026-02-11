@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #0a0a1f, #1a1a3f);
+        }
+
+        /* Gradient orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float-orb 20s ease-in-out infinite;
+        }
+
+        .orb:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.8) 0%, transparent 70%);
+            top: -10%;
+            left: -10%;
+            animation: float-orb-1 25s ease-in-out infinite;
+        }
+
+        .orb:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(233, 71, 245, 0.7) 0%, transparent 70%);
+            top: 20%;
+            right: -5%;
+            animation: float-orb-2 20s ease-in-out infinite;
+        }
+
+        .orb:nth-child(3) {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(118, 75, 162, 0.6) 0%, transparent 70%);
+            bottom: -15%;
+            left: 20%;
+            animation: float-orb-3 30s ease-in-out infinite;
+        }
+
+        .orb:nth-child(4) {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(71, 183, 245, 0.7) 0%, transparent 70%);
+            bottom: 10%;
+            right: 15%;
+            animation: float-orb-4 18s ease-in-out infinite;
+        }
+
+        .orb:nth-child(5) {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(245, 71, 150, 0.6) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: float-orb-5 22s ease-in-out infinite;
+        }
+
+        @keyframes float-orb-1 {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(50px, -80px) scale(1.1);
+            }
+            50% {
+                transform: translate(-30px, -120px) scale(0.9);
+            }
+            75% {
+                transform: translate(80px, -50px) scale(1.05);
+            }
+        }
+
+        @keyframes float-orb-2 {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(-60px, 100px) scale(1.15);
+            }
+            66% {
+                transform: translate(-100px, -60px) scale(0.85);
+            }
+        }
+
+        @keyframes float-orb-3 {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            20% {
+                transform: translate(100px, 50px) scale(1.2);
+            }
+            40% {
+                transform: translate(50px, -100px) scale(0.9);
+            }
+            60% {
+                transform: translate(-80px, -50px) scale(1.1);
+            }
+            80% {
+                transform: translate(-50px, 80px) scale(0.95);
+            }
+        }
+
+        @keyframes float-orb-4 {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            50% {
+                transform: translate(-120px, -100px) scale(1.2);
+            }
+        }
+
+        @keyframes float-orb-5 {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            }
+            25% {
+                transform: translate(calc(-50% + 80px), calc(-50% - 80px)) scale(1.1) rotate(90deg);
+            }
+            50% {
+                transform: translate(calc(-50% - 80px), calc(-50% + 80px)) scale(0.9) rotate(180deg);
+            }
+            75% {
+                transform: translate(calc(-50% + 80px), calc(-50% + 80px)) scale(1.05) rotate(270deg);
+            }
+        }
+
+        /* Grid overlay */
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 20s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        /* Responsive orb sizes */
+        @media (max-width: 768px) {
+            .orb:nth-child(1) {
+                width: 300px;
+                height: 300px;
+            }
+            .orb:nth-child(2) {
+                width: 250px;
+                height: 250px;
+            }
+            .orb:nth-child(3) {
+                width: 350px;
+                height: 350px;
+            }
+            .orb:nth-child(4) {
+                width: 200px;
+                height: 200px;
+            }
+            .orb:nth-child(5) {
+                width: 280px;
+                height: 280px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .orb:nth-child(1) {
+                width: 200px;
+                height: 200px;
+            }
+            .orb:nth-child(2) {
+                width: 180px;
+                height: 180px;
+            }
+            .orb:nth-child(3) {
+                width: 250px;
+                height: 250px;
+            }
+            .orb:nth-child(4) {
+                width: 150px;
+                height: 150px;
+            }
+            .orb:nth-child(5) {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+        /* Particle effects */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: float 10s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4), 0 0 100px rgba(233, 71, 245, 0.2);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 30px 25px;
+                border-radius: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .info-value {
+                font-size: 1.5em;
+            }
+
+            input[type="number"] {
+                padding: 12px;
+                font-size: 1.1em;
+            }
+
+            button {
+                padding: 12px 30px;
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                padding: 25px 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .game-info {
+                gap: 10px;
+            }
+
+            .info-box {
+                padding: 10px;
+            }
+
+            .info-label {
+                font-size: 0.8em;
+            }
+
+            .medal-icon {
+                font-size: 4em;
+            }
+
+            .medal-title {
+                font-size: 1.5em;
+            }
+
+            .medal-message {
+                font-size: 1em;
+            }
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #e947f5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+            padding: 15px;
+            border-radius: 10px;
+            flex: 1;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feedback.too-high {
+            background: linear-gradient(135deg, #ffe5e5 0%, #ffcccc 100%);
+            color: #d32f2f;
+        }
+
+        .feedback.too-low {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            color: #1976d2;
+        }
+
+        .feedback.correct {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            color: #388e3c;
+        }
+
+        .medal-section {
+            margin-top: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            border-radius: 15px;
+            animation: slideIn 0.5s ease-out;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .medal-section.silver {
+            background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+            box-shadow: 0 10px 30px rgba(192, 192, 192, 0.3);
+        }
+
+        .medal-section.bronze {
+            background: linear-gradient(135deg, #cd7f32 0%, #e8a87c 100%);
+            box-shadow: 0 10px 30px rgba(205, 127, 50, 0.3);
+        }
+
+        .medal-icon {
+            font-size: 5em;
+            margin-bottom: 15px;
+            animation: bounce 0.6s ease-out, rotate 3s ease-in-out infinite;
+        }
+
+        .medal-title {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .medal-message {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .attempts-history {
+            margin-top: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f9f9f9 0%, #f0f0f0 100%);
+            border-radius: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .attempts-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .attempt-item {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 10px;
+            background: white;
+            border-radius: 5px;
+            font-size: 0.9em;
+            color: #666;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            animation: popIn 0.3s ease-out;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .new-game-btn {
+            margin-top: 20px;
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        @keyframes rotate {
+            0%, 100% {
+                transform: rotate(-5deg);
+            }
+            50% {
+                transform: rotate(5deg);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <div class="particles" id="particles"></div>
+
+    <div class="game-container">
+        <h1 class="animate__animated animate__backInLeft">🎯 Guess the Number!</h1>
+        <p class="subtitle">I'm thinking of a number between 1 and 100</p>
+
+        <div class="game-info">
+            <div class="info-box">
+                <div class="info-label">Attempts</div>
+                <div class="info-value" id="attempts">0</div>
+            </div>
+            <div class="info-box">
+                <div class="info-label">Best Score</div>
+                <div class="info-value" id="bestScore">-</div>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <input type="number" id="guessInput" min="1" max="100" placeholder="Enter your guess (1-100)">
+            <button id="guessBtn" onclick="makeGuess()">Make Guess</button>
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+
+        <div id="attemptsHistory" class="attempts-history hidden">
+            <div class="attempts-title">Your Guesses:</div>
+            <div id="historyList"></div>
+        </div>
+
+        <div id="medalSection" class="medal-section hidden">
+            <div class="medal-icon" id="medalIcon"></div>
+            <div class="medal-title" id="medalTitle"></div>
+            <div class="medal-message" id="medalMessage"></div>
+            <button class="new-game-btn" onclick="startNewGame()">Play Again 🎮</button>
+        </div>
+    </div>
+
+    <script>
+        // Create particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particle.style.animationDuration = (8 + Math.random() * 4) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        let targetNumber;
+        let attempts = 0;
+        let guessHistory = [];
+        let bestScore = localStorage.getItem('bestScore') || null;
+
+        function initGame() {
+            targetNumber = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            guessHistory = [];
+            document.getElementById('attempts').textContent = '0';
+            document.getElementById('guessInput').value = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('attemptsHistory').classList.add('hidden');
+            document.getElementById('medalSection').classList.add('hidden');
+            document.getElementById('guessInput').disabled = false;
+            document.getElementById('guessBtn').disabled = false;
+            
+            if (bestScore) {
+                document.getElementById('bestScore').textContent = bestScore;
+            }
+        }
+
+        function makeGuess() {
+            const input = document.getElementById('guessInput');
+            const guess = parseInt(input.value);
+            const feedback = document.getElementById('feedback');
+
+            if (!guess || guess < 1 || guess > 100) {
+                feedback.textContent = 'Please enter a number between 1 and 100!';
+                feedback.className = 'feedback';
+                return;
+            }
+
+            attempts++;
+            guessHistory.push(guess);
+            document.getElementById('attempts').textContent = attempts;
+            
+            updateHistory();
+
+            if (guess === targetNumber) {
+                feedback.textContent = `🎉 Correct! You found it in ${attempts} attempts!`;
+                feedback.className = 'feedback correct';
+                document.getElementById('guessInput').disabled = true;
+                document.getElementById('guessBtn').disabled = true;
+                showMedal();
+            } else if (guess < targetNumber) {
+                feedback.textContent = '📈 Too low! Try a higher number.';
+                feedback.className = 'feedback too-low';
+            } else {
+                feedback.textContent = '📉 Too high! Try a lower number.';
+                feedback.className = 'feedback too-high';
+            }
+
+            input.value = '';
+            input.focus();
+        }
+
+        function updateHistory() {
+            const historySection = document.getElementById('attemptsHistory');
+            const historyList = document.getElementById('historyList');
+            
+            historySection.classList.remove('hidden');
+            historyList.innerHTML = guessHistory.map((guess, index) => 
+                `<span class="attempt-item">#${index + 1}: ${guess}</span>`
+            ).join('');
+        }
+
+        function showMedal() {
+            const medalSection = document.getElementById('medalSection');
+            const medalIcon = document.getElementById('medalIcon');
+            const medalTitle = document.getElementById('medalTitle');
+            const medalMessage = document.getElementById('medalMessage');
+
+            let medal, title, message, className;
+
+            if (attempts <= 5) {
+                medal = '🥇';
+                title = 'GOLD MEDAL!';
+                message = 'Outstanding! You\'re a guessing champion!';
+                className = '';
+            } else if (attempts <= 10) {
+                medal = '🥈';
+                title = 'SILVER MEDAL!';
+                message = 'Great job! Very impressive guessing skills!';
+                className = 'silver';
+            } else if (attempts <= 15) {
+                medal = '🥉';
+                title = 'BRONZE MEDAL!';
+                message = 'Well done! You got there in the end!';
+                className = 'bronze';
+            } else {
+                medal = '🏅';
+                title = 'PARTICIPATION MEDAL!';
+                message = 'Good effort! Keep practicing to improve!';
+                className = 'bronze';
+            }
+
+            medalIcon.textContent = medal;
+            medalTitle.textContent = title;
+            medalMessage.textContent = message;
+            medalSection.className = 'medal-section ' + className;
+            medalSection.classList.remove('hidden');
+
+            if (!bestScore || attempts < parseInt(bestScore)) {
+                bestScore = attempts;
+                localStorage.setItem('bestScore', bestScore);
+                document.getElementById('bestScore').textContent = bestScore;
+            }
+        }
+
+        function startNewGame() {
+            initGame();
+        }
+
+        document.getElementById('guessInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                makeGuess();
+            }
+        });
+
+        initGame();
+    </script>
+</body>
+</html>
