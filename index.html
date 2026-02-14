@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,40 +13,78 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f0c29;
+            /* Fallback */
             color: #e0e0e0;
             line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
         }
 
         nav {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
+            background: rgba(15, 12, 41, 0.8);
+            backdrop-filter: blur(15px);
             padding: 1rem 0;
             position: sticky;
             top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 0.8rem 0;
+            background: rgba(15, 12, 41, 0.95);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
         }
 
         nav ul {
             list-style: none;
             display: flex;
             justify-content: center;
-            gap: 2rem;
+            gap: 2.5rem;
             flex-wrap: wrap;
         }
 
         nav a {
-            color: #e0e0e0;
+            color: #bdc3c7;
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s;
+            transition: all 0.3s;
             padding: 0.5rem 1rem;
+            position: relative;
+            font-size: 1.05rem;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: #64ffda;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
 
         nav a:hover {
             color: #64ffda;
+        }
+
+        nav a:hover::after {
+            width: 80%;
         }
 
         .container {
@@ -56,29 +95,50 @@
 
         .hero {
             text-align: center;
-            padding: 6rem 2rem;
-            min-height: 80vh;
+            padding: 8rem 2rem 6rem;
+            /* Increased top padding */
+            min-height: 85vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 4.5rem;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, #64ffda, #667eea, #764ba2, #64ffda);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: fadeInUp 1s ease-out;
+            animation: gradientFlow 5s ease infinite, fadeInUp 1s ease-out;
+            letter-spacing: -1px;
+            font-weight: 800;
         }
 
+        @keyframes gradientFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -89,57 +149,75 @@
             from {
                 opacity: 0;
             }
-            to {
-                opacity: 1;
-            }
-        }
 
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
             to {
                 opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
             }
         }
 
         @keyframes float {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0px);
             }
+
             50% {
-                transform: translateY(-20px);
+                transform: translateY(-10px);
             }
         }
 
         .hero p {
             font-size: 1.5rem;
-            color: #64ffda;
+            color: #a8b2d1;
+            /* Softer color */
             margin-bottom: 3rem;
-            animation: fadeInUp 1s ease-out 0.3s backwards;
+            min-height: 1.6em;
+            /* Reserve space for typing */
+            font-family: 'Courier New', Courier, monospace;
+            /* Monospace for typing effect */
+        }
+
+        .hero p .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background-color: #64ffda;
+            animation: blink 0.7s infinite;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
         }
 
         section {
-            padding: 4rem 2rem;
-            margin: 2rem 0;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 15px;
+            padding: 5rem 2rem;
+            margin: 3rem 0;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            animation: fadeIn 1s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+            opacity: 0;
+            /* Convert to opacity 0 for scroll reveal */
+            transform: translateY(30px);
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
 
         h2 {
@@ -291,7 +369,9 @@
         }
     </style>
 </head>
+
 <body>
+    <canvas id="particles-canvas"></canvas>
     <nav>
         <ul>
             <li><a href="#home">Home</a></li>
@@ -304,15 +384,21 @@
 
     <div class="hero" id="home">
         <h1>Vighan Raj Verma</h1>
-        <p>Computer Science Student | Aspiring Data Scientist</p>
+        <p><span id="typing-text"></span><span class="typing-cursor"></span></p>
     </div>
 
     <div class="container">
         <section id="about">
             <h2>About Me</h2>
             <div class="about-content">
-                <p>Hi, I'm Vighan Raj Verma, a B.Tech Computer Science student with a strong interest in data-driven technologies and emerging innovations in the tech world. I'm passionate about developing a solid foundation in programming, algorithms, and analytical thinking, with a long-term goal of becoming a Data Scientist.</p>
-                <p>I enjoy exploring concepts in data analysis, machine learning, and problem-solving, while continuously expanding my technical knowledge through hands-on coding and real-world projects. I'm committed to learning, experimenting, and growing my expertise to contribute meaningfully to the field of technology and data science.</p>
+                <p>Hi, I'm Vighan Raj Verma, a B.Tech Computer Science student with a strong interest in data-driven
+                    technologies and emerging innovations in the tech world. I'm passionate about developing a solid
+                    foundation in programming, algorithms, and analytical thinking, with a long-term goal of becoming a
+                    Data Scientist.</p>
+                <p>I enjoy exploring concepts in data analysis, machine learning, and problem-solving, while
+                    continuously expanding my technical knowledge through hands-on coding and real-world projects. I'm
+                    committed to learning, experimenting, and growing my expertise to contribute meaningfully to the
+                    field of technology and data science.</p>
                 <p class="university">🎓 Rajiv Gandhi Proudyogiki Vishwavidyalaya</p>
             </div>
         </section>
@@ -350,37 +436,48 @@
             <div class="projects-grid">
                 <div class="project-card">
                     <h3>Scientific Calculator</h3>
-                    <p>A fully functional scientific calculator with beautiful animated ColorBends shader background. Features trigonometric functions, logarithms, exponents, memory functions, and support for both degrees and radians modes.</p>
-                    <p style="margin-top: 1rem; color: #64ffda;">Technologies: HTML, CSS, JavaScript, Three.js, WebGL Shaders</p>
+                    <p>A fully functional scientific calculator with beautiful animated ColorBends shader background.
+                        Features trigonometric functions, logarithms, exponents, memory functions, and support for both
+                        degrees and radians modes.</p>
+                    <p style="margin-top: 1rem; color: #64ffda;">Technologies: HTML, CSS, JavaScript, Three.js, WebGL
+                        Shaders</p>
                     <div style="margin-top: 1.5rem;">
-                        <a href="calculator.html" target="_blank" style="color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border: 2px solid #667eea; border-radius: 5px; display: inline-block; transition: all 0.3s;">
+                        <a href="calculator.html" target="_blank"
+                            style="color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border: 2px solid #667eea; border-radius: 5px; display: inline-block; transition: all 0.3s;">
                             View Calculator
                         </a>
                     </div>
                 </div>
                 <div class="project-card">
                     <h3>Number Guessing Game</h3>
-                    <p>An interactive number guessing game with stunning gradient orb animations and medal-based scoring system. Features animated UI, responsive design, and tracks your best performance with local storage.</p>
+                    <p>An interactive number guessing game with stunning gradient orb animations and medal-based scoring
+                        system. Features animated UI, responsive design, and tracks your best performance with local
+                        storage.</p>
                     <p style="margin-top: 1rem; color: #64ffda;">Technologies: HTML, CSS, JavaScript, Animate.css</p>
                     <div style="margin-top: 1.5rem;">
-                        <a href="guessing-game.html" target="_blank" style="color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border: 2px solid #667eea; border-radius: 5px; display: inline-block; transition: all 0.3s;">
+                        <a href="guessing-game.html" target="_blank"
+                            style="color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border: 2px solid #667eea; border-radius: 5px; display: inline-block; transition: all 0.3s;">
                             Play Game
                         </a>
                     </div>
                 </div>
                 <div class="project-card">
                     <h3>NexTask - To-Do App</h3>
-                    <p>A modern task management application with aurora background effects and smart notifications. Features task categorization, priority levels, due dates, local storage persistence, and PWA support with daily reminders.</p>
+                    <p>A modern task management application with aurora background effects and smart notifications.
+                        Features task categorization, priority levels, due dates, local storage persistence, and PWA
+                        support with daily reminders.</p>
                     <p style="margin-top: 1rem; color: #64ffda;">Technologies: HTML, CSS, JavaScript, WebGL2, PWA</p>
                     <div style="margin-top: 1.5rem;">
-                        <a href="nextask-app.html" target="_blank" style="color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border: 2px solid #667eea; border-radius: 5px; display: inline-block; transition: all 0.3s;">
+                        <a href="nextask.html" target="_blank"
+                            style="color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border: 2px solid #667eea; border-radius: 5px; display: inline-block; transition: all 0.3s;">
                             Open App
                         </a>
                     </div>
                 </div>
                 <div class="project-card">
                     <h3>Coming Soon</h3>
-                    <p>Exciting projects in development. Stay tuned for updates on my data science and programming endeavors!</p>
+                    <p>Exciting projects in development. Stay tuned for updates on my data science and programming
+                        endeavors!</p>
                 </div>
             </div>
         </section>
@@ -388,7 +485,8 @@
         <section id="contact">
             <h2>Get In Touch</h2>
             <div class="contact-content">
-                <p>I'm always open to discussing new opportunities, collaborations, or just connecting with fellow tech enthusiasts!</p>
+                <p>I'm always open to discussing new opportunities, collaborations, or just connecting with fellow tech
+                    enthusiasts!</p>
                 <p style="margin-top: 2rem; font-size: 1.1rem; color: #64ffda;">📧 vighnrajverma00893@gmail.com</p>
                 <div class="contact-links">
                     <a href="https://github.com/Vighan-coder" target="_blank">GitHub</a>
@@ -413,45 +511,213 @@
             });
         });
 
-        // Intersection Observer for scroll animations
+        // Sticky Navbar
+        window.addEventListener('scroll', function () {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Typing Effect
+        const textToType = "Computer Science Student | Aspiring Data Scientist";
+        const typingElement = document.getElementById('typing-text');
+        let charIndex = 0;
+
+        function typeText() {
+            if (charIndex < textToType.length) {
+                typingElement.textContent += textToType.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeText, 100);
+            }
+        }
+
+        // Start typing after a short delay
+        setTimeout(typeText, 500);
+
+        // Scroll Reveal Animation (Enhanced)
         const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
+            entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }, index * 100);
+                    entry.target.classList.add('visible');
+                    // Stop observing once visible? No, let's keep it for re-entry or just one-off
+                    observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
 
-        // Observe skill cards
-        document.querySelectorAll('.skill-category').forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(card);
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
         });
 
-        // Observe project cards
-        document.querySelectorAll('.project-card').forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(card);
+        // Particle Background Animation
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particlesArray;
+
+        // Set canvas size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
         });
 
-        // Parallax effect for background
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            document.body.style.backgroundPositionY = scrolled * 0.5 + 'px';
+        // Mouse interaction
+        const mouse = {
+            x: null,
+            y: null,
+            radius: 150
+        }
+
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        // Create Particle Class
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+            }
+
+            // Method to draw individual particle
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = '#64ffda';
+                ctx.fill();
+            }
+
+            // Method to check particle position, check mouse position, move the particle, draw the particle
+            update() {
+                // Check if particle is still within canvas
+                if (this.x > canvas.width || this.x < 0) {
+                    this.directionX = -this.directionX;
+                }
+                if (this.y > canvas.height || this.y < 0) {
+                    this.directionY = -this.directionY;
+                }
+
+                // Check collision detection - mouse position / particle position
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < mouse.radius + this.size) {
+                    if (mouse.x < this.x && this.x < canvas.width - this.size * 10) {
+                        this.x += 10;
+                    }
+                    if (mouse.x > this.x && this.x > this.size * 10) {
+                        this.x -= 10;
+                    }
+                    if (mouse.y < this.y && this.y < canvas.height - this.size * 10) {
+                        this.y += 10;
+                    }
+                    if (mouse.y > this.y && this.y > this.size * 10) {
+                        this.y -= 10;
+                    }
+                }
+
+                // Move particle
+                this.x += this.directionX;
+                this.y += this.directionY;
+
+                // Draw particle
+                this.draw();
+            }
+        }
+
+        // Create particle array
+        function init() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * 2) - 1; // -2.5 to 2.5
+                let directionY = (Math.random() * 2) - 1; // -2.5 to 2.5
+                // let color = '#64ffda'; // Use single color or random colors
+
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, '#64ffda'));
+            }
+        }
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+            connect();
+        }
+
+        // Check if particles are close enough to draw line between them
+        function connect() {
+            let opacityValue = 1;
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) +
+                        ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+
+                    if (distance < (canvas.width / 7) * (canvas.height / 7)) {
+                        opacityValue = 1 - (distance / 20000);
+                        ctx.strokeStyle = 'rgba(100, 255, 218,' + opacityValue + ')';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        init();
+        animate();
+
+        // 3D Tilt Effect for Cards
+        const cards = document.querySelectorAll('.project-card, .skill-category');
+
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                card.style.transition = 'transform 0.1s ease';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                card.style.transition = 'transform 0.3s ease';
+            });
         });
     </script>
 </body>
-</html>
 
+</html>
